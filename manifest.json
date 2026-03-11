@@ -1,0 +1,14 @@
+{
+  "name": "시애틀 지구촌 가이드",
+  "short_name": "시애틀 가이드",
+  "description": "시애틀 한인 생활 정보 & 지구촌교회 가이드",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0d1b3e",
+  "theme_color": "#1a2e6c",
+  "orientation": "portrait",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}
