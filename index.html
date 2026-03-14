@@ -1021,7 +1021,7 @@ function sTabGo(sectionId, btnEl, prefix, appId) {
                     </div>
                 </div>
             </div>
-            <a href="http://www.ijiguchon.org" target="_blank" class="link-button" style="background:#ffd700;color:#1a1a4e;font-weight:800;">💌 방문 예약 & 문의</a>
+            <a href="https://forms.gle/hDXRWHt28v7rNQYk8" target="_blank" class="link-button" style="background:#ffd700;color:#1a1a4e;font-weight:800;">💌 방문 예약 & 문의</a>
         </div>
 
         <!-- ===== 2. 교회 기본 정보 (예배·위치·링크) ===== -->
@@ -1174,7 +1174,7 @@ function sTabGo(sectionId, btnEl, prefix, appId) {
                 </div>
 
                 <!-- CTA 버튼 -->
-                <a href="http://www.ijiguchon.org/chnet2/home/?type=sub&step1=3&sid=56" target="_blank"
+                <a href="https://forms.gle/hDXRWHt28v7rNQYk8" target="_blank"
                    style="display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#1a2e6c,#0d1b3e);color:white;padding:12px 20px;border-radius:14px;font-weight:800;text-decoration:none;font-size:0.88rem;box-shadow:0 4px 14px rgba(26,46,108,0.35);margin-bottom:10px;">
                     🙋 목장 연결 요청
                 </a>
@@ -1391,7 +1391,7 @@ function sTabGo(sectionId, btnEl, prefix, appId) {
                 </div>
 
                 <!-- CTA 버튼 -->
-                <a href="http://www.ijiguchon.org/chnet2/home/?type=sub&step1=8&sid=38&parent=&code=board02&threadKey=11862&gfile=boardView&pagecnt=1&start=0&word=&categorysearch=" target="_blank"
+                <a href="https://forms.gle/hDXRWHt28v7rNQYk8" target="_blank"
                    style="display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#2d6a4f,#1a3a2a);color:white;padding:12px 20px;border-radius:14px;font-weight:800;text-decoration:none;font-size:0.88rem;box-shadow:0 4px 14px rgba(45,106,79,0.35);margin-bottom:10px;">
                     🧡 가정행복학교 상담 안내 보기
                 </a>
@@ -1473,7 +1473,7 @@ function sTabGo(sectionId, btnEl, prefix, appId) {
                 </div>
 
                 <!-- CTA 버튼 -->
-                <a href="http://www.ijiguchon.org/chnet2/home/?type=sub&step1=8&sid=38&parent=0&code=board02&threadKey=11830&gfile=boardView&pagecnt=1&start=0&word=&categorysearch=" target="_blank"
+                <a href="https://forms.gle/hDXRWHt28v7rNQYk8" target="_blank"
                    style="display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#1a3a6c,#0a1628);color:white;padding:12px 20px;border-radius:14px;font-weight:800;text-decoration:none;font-size:0.88rem;box-shadow:0 4px 14px rgba(26,58,108,0.35);">
                     🗣️ 영어 톡타임 안내 보기
                 </a>
@@ -3377,22 +3377,3 @@ function artScrollTo(sectionId, btnEl) {
         <span style="font-size:1.3rem;line-height:1;">🏠</span>
         <span style="font-size:0.45rem;color:rgba(255,255,255,0.85);font-weight:700;letter-spacing:0.5px;">HOME</span>
     
-<script>
-(function(){
-  window['initShoppingScrollSpy'] = function() {
-    var app = document.getElementById('shoppingApp');
-    if (!app || app._si_sh) return;
-    app._si_sh = true;
-    var tabbar = document.getElementById('sh-tabbar');
-    var ids = ['sh-0','sh-1','sh-2','sh-3','sh-4','sh-5','sh-6','sh-7'];
-    app.addEventListener('scroll', function() {
-      var headerEl = app.querySelector('.app-header');
-      var headerH = headerEl ? headerEl.offsetHeight : 0;
-      var tabH = tabbar ? tabbar.offsetHeight : 44;
-      var threshold = headerH + tabH + 20;
-      var cur = ids[0];
-      ids.forEach(function(id) {
-        var el = document.getElementById(id);
-        if (el) {
-          var elTop = 0, node = el;
-          while (node && node !== app
