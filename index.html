@@ -539,7 +539,7 @@ function sTabGo(sectionId, btnEl, prefix, appId) {
                 backdrop-filter:blur(6px);
                 letter-spacing:0.5px;
                 transition:all 0.2s;
-            ">🌐 EN</button>
+            ">🌐 한국어</button>
         </div>
 
         <div class="page-title">
@@ -3199,7 +3199,9 @@ function artScrollTo(sectionId, btnEl) {
 
 <script>
     // ── 언어 전환 시스템 ──────────────────────────────
-    let currentLang = 'ko';
+    // 브라우저 언어 자동 감지: 한국어 브라우저 → 한국어, 그 외 → 영어
+    const _browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+    let currentLang = _browserLang.startsWith('ko') ? 'ko' : 'en';
 
     function toggleLang() {
         currentLang = currentLang === 'ko' ? 'en' : 'ko';
@@ -3209,12 +3211,12 @@ function artScrollTo(sectionId, btnEl) {
     function applyLang(lang) {
         const btn = document.getElementById('langToggleBtn');
 
-        // 버튼 UI 업데이트
+        // 버튼 UI 업데이트 (현재 언어의 반대 언어 표시)
         if (lang === 'en') {
             btn.innerHTML = '🌐 한국어';
             btn.style.background = 'rgba(255,255,255,0.35)';
         } else {
-            btn.innerHTML = '🌐 EN';
+            btn.innerHTML = '🌐 English';
             btn.style.background = 'rgba(255,255,255,0.22)';
         }
 
@@ -5448,8 +5450,34 @@ function artScrollTo(sectionId, btnEl) {
         }
         translateTextNodes(document.body);
     } else {
-        // 한국어 복원: 페이지 리로드 방식
-        location.reload();
+        // ── 한국어 복원: data-ko 속성으로 직접 복원 ──
+        document.querySelectorAll('[data-ko][data-en]').forEach(el => {
+            const val = el.getAttribute('data-ko');
+            if (!val) return;
+            if (val.includes('<br>') || el.tagName === 'H3' || el.tagName === 'H1') {
+                el.innerHTML = val;
+            } else {
+                el.textContent = val;
+            }
+        });
+        // span data-ko/data-en 으로 감싼 텍스트노드 복원
+        document.querySelectorAll('span[data-ko][data-en]').forEach(el => {
+            el.textContent = el.getAttribute('data-ko');
+        });
+        // _textDict 텍스트노드 복원 (역방향 사전)
+        const _reverseDict = {};
+        Object.entries(_textDict).forEach(([ko, en]) => { _reverseDict[en] = ko; });
+        function restoreTextNodes(node) {
+            if (node.nodeType === 3) {
+                const t = node.textContent.trim();
+                if (_reverseDict[t]) {
+                    node.textContent = node.textContent.replace(t, _reverseDict[t]);
+                }
+            } else if (node.nodeType === 1 && !['SCRIPT','STYLE'].includes(node.tagName)) {
+                node.childNodes.forEach(restoreTextNodes);
+            }
+        }
+        restoreTextNodes(document.body);
     }
     } // end applyLang
 
@@ -5469,6 +5497,8 @@ function artScrollTo(sectionId, btnEl) {
             document.body.style.overflow='hidden';
             // 홈 버튼 표시
             document.getElementById('floating-home-btn').style.display = 'flex';
+            // ── URL 해시 업데이트 (딥링크) ──
+            try { history.replaceState(null, '', '#' + n); } catch(e) {}
         }
     }
     function closeApp(n) {
@@ -5479,6 +5509,8 @@ function artScrollTo(sectionId, btnEl) {
         if(!anyOpen){
             document.body.style.overflow='auto';
             document.getElementById('floating-home-btn').style.display = 'none';
+            // ── 해시 제거 (홈으로 돌아올 때) ──
+            try { history.replaceState(null, '', location.pathname); } catch(e) {}
         }
     }
     function goHome() {
@@ -5487,6 +5519,8 @@ function artScrollTo(sectionId, btnEl) {
         });
         document.body.style.overflow='auto';
         document.getElementById('floating-home-btn').style.display = 'none';
+        // ── 해시 제거 ──
+        try { history.replaceState(null, '', location.pathname); } catch(e) {}
         window.scrollTo({top:0, behavior:'smooth'});
     }
     document.addEventListener('keydown',e=>{
@@ -5522,6 +5556,36 @@ function artScrollTo(sectionId, btnEl) {
             }
         });
     }
+
+    // ── 딥링크: 페이지 로드 시 URL 해시로 탭 자동 열기 ──────────────
+    const _validApps = ['church','newcomer','links','health','job','korean',
+        'transport','coffee','food','culture','art','edu',
+        'healing','history','sports','shopping'];
+
+    window.addEventListener('DOMContentLoaded', function() {
+        // 1) 브라우저 언어에 맞게 자동 적용
+        if (currentLang === 'en') {
+            applyLang('en');
+        }
+        // 2) URL 해시로 탭 자동 열기
+        const hash = location.hash.replace('#', '').toLowerCase();
+        if (_validApps.includes(hash)) {
+            setTimeout(function() { openApp(hash); }, 100);
+        }
+    });
+
+    // 브라우저 뒤로가기/앞으로가기 지원
+    window.addEventListener('popstate', function() {
+        const hash = location.hash.replace('#', '').toLowerCase();
+        if (_validApps.includes(hash)) {
+            openApp(hash);
+        } else {
+            // 해시 없으면 모든 앱 닫고 홈으로
+            document.querySelectorAll('.app-screen.active').forEach(s => s.classList.remove('active'));
+            document.body.style.overflow = 'auto';
+            document.getElementById('floating-home-btn').style.display = 'none';
+        }
+    });
 </script>
 
     <!-- 플로팅 홈 버튼 -->
