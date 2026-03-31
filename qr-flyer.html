@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Seattle Guide — Church App Flyer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* PRINT STYLES */
+@page {
+  size: 8.5in 5.5in;
+  margin: 0;
+}
+@media print {
+  body { margin: 0; }
+  .no-print { display: none !important; }
+  .flyer { box-shadow: none !important; }
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #e8e4dc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.no-print {
+  margin-bottom: 1.5rem;
+  display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+}
+.print-btn {
+  background: #1a3a2a; color: white; border: none;
+  padding: 0.7rem 1.8rem; border-radius: 4px; font-size: 0.85rem;
+  cursor: pointer; font-family: 'DM Sans', sans-serif; letter-spacing: 0.06em;
+}
+.print-btn:hover { background: #2d5a40; }
+
+/* FLYER CONTAINER */
+.flyer {
+  width: 8.5in;
+  height: 5.5in;
+  display: flex;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+  overflow: hidden;
+  background: white;
+}
+
+/* LEFT PANEL */
+.panel-left {
+  width: 62%;
+  background: #1a3a2a;
+  padding: 0.55in 0.5in;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+.panel-left::before {
+  content: '';
+  position: absolute;
+  bottom: -0.8in; right: -0.8in;
+  width: 2.5in; height: 2.5in;
+  border-radius: 50%;
+  background: rgba(200,169,110,0.08);
+}
+.panel-left::after {
+  content: '';
+  position: absolute;
+  top: -0.5in; left: -0.3in;
+  width: 1.5in; height: 1.5in;
+  border-radius: 50%;
+  background: rgba(200,169,110,0.05);
+}
+
+.tag {
+  font-size: 0.55rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: #c8a96e; margin-bottom: 0.18in;
+}
+.main-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.72in; line-height: 1.0;
+  font-weight: 900; color: white;
+  margin-bottom: 0.12in;
+}
+.main-title em { font-style: italic; color: #c8a96e; }
+.sub-title {
+  font-size: 0.145in; color: rgba(255,255,255,0.55);
+  font-weight: 300; line-height: 1.6; max-width: 3.8in;
+  margin-bottom: 0.25in;
+}
+
+.features {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.1in 0.2in;
+}
+.feat {
+  display: flex; align-items: flex-start; gap: 0.08in;
+  font-size: 0.12in; color: rgba(255,255,255,0.7); line-height: 1.4;
+}
+.feat-dot {
+  width: 0.08in; height: 0.08in; background: #c8a96e;
+  border-radius: 50%; margin-top: 0.03in; flex-shrink: 0;
+}
+
+.price-bar {
+  margin-top: 0.22in; padding-top: 0.15in;
+  border-top: 1px solid rgba(200,169,110,0.25);
+  display: flex; align-items: baseline; gap: 0.1in;
+}
+.price { font-family: 'Playfair Display', serif; font-size: 0.32in; color: #c8a96e; }
+.price-note { font-size: 0.11in; color: rgba(255,255,255,0.45); }
+
+/* RIGHT PANEL */
+.panel-right {
+  width: 38%;
+  background: #f5f2ec;
+  padding: 0.45in 0.4in;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: space-between;
+  border-left: 3px solid #c8a96e;
+}
+.right-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.2in; color: #1a3a2a; font-weight: 700;
+  text-align: center; margin-bottom: 0.06in;
+}
+.right-sub {
+  font-size: 0.1in; color: #6b7565; text-align: center; line-height: 1.5;
+  margin-bottom: 0.2in;
+}
+
+/* QR CODE PLACEHOLDER */
+.qr-box {
+  width: 1.8in; height: 1.8in;
+  border: 2px solid #1a3a2a;
+  border-radius: 8px;
+  background: white;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+/* QR Corner decorations */
+.qr-corner {
+  position: absolute;
+  width: 0.22in; height: 0.22in;
+  border-color: #c8a96e;
+  border-style: solid;
+}
+.qr-corner.tl { top: 0.1in; left: 0.1in; border-width: 3px 0 0 3px; }
+.qr-corner.tr { top: 0.1in; right: 0.1in; border-width: 3px 3px 0 0; }
+.qr-corner.bl { bottom: 0.1in; left: 0.1in; border-width: 0 0 3px 3px; }
+.qr-corner.br { bottom: 0.1in; right: 0.1in; border-width: 0 3px 3px 0; }
+.qr-placeholder-text {
+  font-size: 0.095in; color: #1a3a2a; font-weight: 500;
+  text-align: center; line-height: 1.5;
+}
+.qr-url {
+  font-size: 0.085in; color: #6b7565; margin-top: 0.04in;
+  text-align: center;
+}
+.qr-note {
+  font-size: 0.09in; color: #6b7565;
+  text-align: center; margin-top: 0.12in; line-height: 1.5;
+}
+
+.steps-mini {
+  width: 100%;
+  margin-top: 0.12in;
+}
+.step-mini {
+  display: flex; align-items: flex-start; gap: 0.08in;
+  margin-bottom: 0.08in;
+}
+.step-num-mini {
+  width: 0.16in; height: 0.16in; background: #1a3a2a; color: white;
+  border-radius: 50%; font-size: 0.08in; font-weight: 500;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.step-text { font-size: 0.09in; color: #3d5040; line-height: 1.4; }
+
+.bottom-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.095in; color: #1a3a2a; opacity: 0.5;
+  text-align: center; border-top: 1px solid rgba(26,58,42,0.15);
+  padding-top: 0.1in; width: 100%;
+}
+</style>
+</head>
+<body>
+
+<div class="no-print">
+  <button class="print-btn" onclick="window.print()">🖨 Print Flyer</button>
+  <button class="print-btn" style="background:#3d5040" onclick="document.querySelector('.panel-right .qr-placeholder-text').innerHTML='Replace this<br>with your QR'">Edit QR Text</button>
+</div>
+
+<div class="flyer">
+  <!-- LEFT: Main message -->
+  <div class="panel-left">
+    <div>
+      <p class="tag">For Church Planters · 교회 개척자를 위한</p>
+      <div class="main-title">City<br><em>Guide</em><br>App</div>
+      <p class="sub-title">Help your new members find hospitals, DMV, schools, banks, and more — in their own language, from day one.</p>
+
+      <div class="features">
+        <div class="feat"><div class="feat-dot"></div><div>15+ local resource tabs</div></div>
+        <div class="feat"><div class="feat-dot"></div><div>Korean · English · Filipino</div></div>
+        <div class="feat"><div class="feat-dot"></div><div>No app store download</div></div>
+        <div class="feat"><div class="feat-dot"></div><div>Ready in 3–5 days</div></div>
+        <div class="feat"><div class="feat-dot"></div><div>병원 · DMV · 학교 · 은행</div></div>
+        <div class="feat"><div class="feat-dot"></div><div>교회 맞춤 제작</div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="price-bar">
+        <span class="price">$50</span>
+        <span class="price-note">one-time · NWCP partner code available</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: QR + CTA -->
+  <div class="panel-right">
+    <div style="text-align:center; width:100%">
+      <div class="right-title">Scan to see the demo</div>
+      <div class="right-sub">See a live example<br>before you order</div>
+    </div>
+
+    <div class="qr-box">
+      <div class="qr-corner tl"></div>
+      <div class="qr-corner tr"></div>
+      <div class="qr-corner bl"></div>
+      <div class="qr-corner br"></div>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://hebronguide.com&margin=4" style="width:1.5in;height:1.5in;border-radius:4px;">
+    </div>
+
+    <div class="qr-url">hebronguide.com</div>
+
+    <div class="steps-mini">
+      <div class="step-mini"><div class="step-num-mini">1</div><div class="step-text">Scan QR or visit the site</div></div>
+      <div class="step-mini"><div class="step-num-mini">2</div><div class="step-text">Submit request form</div></div>
+      <div class="step-mini"><div class="step-num-mini">3</div><div class="step-text">Get your church's guide in 5 days</div></div>
+    </div>
+
+    <div class="bottom-logo">GMC Seattle · ijiguchon.org</div>
+  </div>
+</div>
+
+</body>
+</html>
