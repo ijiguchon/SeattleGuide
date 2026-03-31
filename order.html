@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>City Guide App for Churches — Seattle Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d1b2a;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #f7f3ec;
+    --muted: #6b7280;
+    --border: rgba(201,168,76,0.25);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--cream);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 2.5rem;
+    background: rgba(13,27,42,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--gold); letter-spacing: 0.02em; }
+  .nav-cta {
+    font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+    background: var(--gold); color: var(--navy); padding: 0.55rem 1.4rem;
+    border-radius: 2px; text-decoration: none; transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--gold-light); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 7rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: ''; display: block; height: 1px; width: 40px; background: var(--gold); opacity: 0.5;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 900; line-height: 1.05;
+    max-width: 820px;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub {
+    font-size: 1.1rem; font-weight: 300; color: rgba(247,243,236,0.7);
+    max-width: 520px; line-height: 1.7; margin-bottom: 2.5rem;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  .btn-primary {
+    font-size: 0.88rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+    background: var(--gold); color: var(--navy); padding: 1rem 2.2rem;
+    border-radius: 2px; text-decoration: none; transition: all 0.2s;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .btn-ghost {
+    font-size: 0.88rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+    background: transparent; color: var(--cream); padding: 1rem 2.2rem;
+    border: 1px solid rgba(247,243,236,0.3); border-radius: 2px; text-decoration: none; transition: all 0.2s;
+    cursor: pointer;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+  .hero-price {
+    margin-top: 2.5rem; font-size: 0.82rem; color: rgba(247,243,236,0.45);
+    letter-spacing: 0.04em;
+  }
+  .hero-price strong { color: var(--gold-light); }
+
+  /* PROOF BAR */
+  .proof-bar {
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    padding: 1.6rem 2.5rem;
+    display: flex; align-items: center; justify-content: center; gap: 3rem; flex-wrap: wrap;
+    background: rgba(201,168,76,0.04);
+  }
+  .proof-item { text-align: center; }
+  .proof-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--gold); }
+  .proof-label { font-size: 0.75rem; color: rgba(247,243,236,0.5); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 2px; }
+
+  /* SECTION SHARED */
+  section { padding: 5rem 2rem; }
+  .section-inner { max-width: 960px; margin: 0 auto; }
+  .section-tag {
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700; line-height: 1.2; margin-bottom: 1.2rem;
+  }
+  .section-lead { font-size: 1.05rem; font-weight: 300; color: rgba(247,243,236,0.65); line-height: 1.75; max-width: 560px; }
+
+  /* HOW IT WORKS */
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2px; margin-top: 3rem; }
+  .step {
+    background: rgba(247,243,236,0.03); border: 1px solid var(--border);
+    padding: 2rem 1.6rem; position: relative; transition: background 0.2s;
+  }
+  .step:hover { background: rgba(201,168,76,0.05); }
+  .step-num {
+    font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900;
+    color: rgba(201,168,76,0.15); line-height: 1; margin-bottom: 1rem;
+  }
+  .step h3 { font-size: 1rem; font-weight: 500; margin-bottom: 0.6rem; }
+  .step p { font-size: 0.88rem; color: rgba(247,243,236,0.55); line-height: 1.65; }
+
+  /* PRICING */
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+  .pricing-card {
+    border: 1px solid var(--border); padding: 2rem 1.8rem;
+    border-radius: 4px; position: relative;
+  }
+  .pricing-card.featured {
+    border-color: var(--gold); background: rgba(201,168,76,0.06);
+  }
+  .pricing-badge {
+    position: absolute; top: -1px; right: 1.5rem;
+    background: var(--gold); color: var(--navy);
+    font-size: 0.68rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.3rem 0.8rem; border-radius: 0 0 4px 4px;
+  }
+  .pricing-name { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(247,243,236,0.5); margin-bottom: 0.8rem; }
+  .pricing-price { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--gold); line-height: 1; }
+  .pricing-price span { font-size: 1rem; color: rgba(247,243,236,0.45); font-family: 'DM Sans', sans-serif; }
+  .pricing-desc { font-size: 0.88rem; color: rgba(247,243,236,0.55); margin: 1rem 0 1.4rem; line-height: 1.6; }
+  .pricing-features { list-style: none; }
+  .pricing-features li {
+    font-size: 0.85rem; color: rgba(247,243,236,0.7); padding: 0.45rem 0;
+    border-bottom: 1px solid rgba(247,243,236,0.07);
+    display: flex; gap: 0.6rem; align-items: flex-start;
+  }
+  .pricing-features li::before { content: '→'; color: var(--gold); flex-shrink: 0; }
+
+  /* FORM */
+  .form-section { background: rgba(247,243,236,0.02); border-top: 1px solid var(--border); }
+  .form-wrap {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    align-items: start;
+  }
+  @media (max-width: 700px) { .form-wrap { grid-template-columns: 1fr; gap: 2rem; } }
+  form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+  label { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(247,243,236,0.5); display: block; margin-bottom: 0.35rem; }
+  input, select, textarea {
+    width: 100%; background: rgba(247,243,236,0.04); border: 1px solid var(--border);
+    color: var(--cream); padding: 0.75rem 1rem; font-family: 'DM Sans', sans-serif; font-size: 0.92rem;
+    border-radius: 2px; outline: none; transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--gold); }
+  select option { background: var(--navy); }
+  textarea { resize: vertical; min-height: 100px; }
+  .submit-btn {
+    margin-top: 0.5rem; background: var(--gold); color: var(--navy);
+    border: none; padding: 1rem 2rem; font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    cursor: pointer; border-radius: 2px; transition: all 0.2s;
+  }
+  .submit-btn:hover { background: var(--gold-light); }
+  .form-note { font-size: 0.78rem; color: rgba(247,243,236,0.35); margin-top: 0.5rem; line-height: 1.6; }
+
+  .form-info h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 1rem; }
+  .form-info p { font-size: 0.9rem; color: rgba(247,243,236,0.55); line-height: 1.75; margin-bottom: 1rem; }
+  .contact-line { display: flex; gap: 0.6rem; align-items: center; font-size: 0.85rem; color: rgba(247,243,236,0.5); margin-top: 1.5rem; }
+  .contact-line a { color: var(--gold); text-decoration: none; }
+
+  /* SUCCESS */
+  #success-msg {
+    display: none; background: rgba(201,168,76,0.1); border: 1px solid var(--gold);
+    padding: 1.2rem 1.5rem; border-radius: 4px; font-size: 0.92rem; color: var(--gold-light);
+    margin-top: 1rem;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border); padding: 2rem 2.5rem;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    font-size: 0.78rem; color: rgba(247,243,236,0.3);
+  }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--gold); opacity: 0.7; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .hero h1, .hero-sub, .hero-actions { animation: fadeUp 0.7s ease both; }
+  .hero h1 { animation-delay: 0.1s; }
+  .hero-sub { animation-delay: 0.2s; }
+  .hero-actions { animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">Seattle Guide · Church App</span>
+  <a href="#apply" class="nav-cta">Apply Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">For Church Planters &amp; Pastors</p>
+  <h1>Your City.<br><em>Your Church's</em><br>Welcome Guide.</h1>
+  <p class="hero-sub">A custom mobile web app that helps new immigrants and first-time visitors feel at home — in your city, in your language, in your church.</p>
+  <div class="hero-actions">
+    <a href="#apply" class="btn-primary">Request Your App →</a>
+    <a href="#how" class="btn-ghost">See How It Works</a>
+  </div>
+  <p class="hero-price">Starting at <strong>$50 one-time</strong> · No app store required · Ready in 3–5 days</p>
+</section>
+
+<!-- PROOF BAR -->
+<div class="proof-bar">
+  <div class="proof-item"><div class="proof-num">15+</div><div class="proof-label">Resource Tabs</div></div>
+  <div class="proof-item"><div class="proof-num">3–5</div><div class="proof-label">Days to Launch</div></div>
+  <div class="proof-item"><div class="proof-num">3+</div><div class="proof-label">Languages Available</div></div>
+  <div class="proof-item"><div class="proof-num">$0</div><div class="proof-label">App Store Fees</div></div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-inner">
+    <p class="section-tag">Process</p>
+    <h2 class="section-title">From order to launch<br>in less than a week.</h2>
+    <p class="section-lead">We build a fully customized city guide PWA for your church community — no coding required on your end.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">01</div><h3>Submit your request</h3><p>Fill out the form below with your church info, city, and language preference.</p></div>
+      <div class="step"><div class="step-num">02</div><h3>We customize it</h3><p>We tailor all 15+ resource tabs — hospitals, DMV, schools, banks, grocery stores — for your city.</p></div>
+      <div class="step"><div class="step-num">03</div><h3>You receive a QR code</h3><p>Your congregation scans it to add the app to their phone home screen. No app store, no download.</p></div>
+      <div class="step"><div class="step-num">04</div><h3>Members feel at home</h3><p>New immigrants and visitors find everything they need in their language, recommended by their church.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="background: rgba(247,243,236,0.02); border-top: 1px solid var(--border);">
+  <div class="section-inner">
+    <p class="section-tag">Pricing</p>
+    <h2 class="section-title">Simple, honest pricing.</h2>
+    <p class="section-lead">Less than a month of coffee. A lifetime of impact for your new members.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <p class="pricing-name">Basic</p>
+        <div class="pricing-price">$50 <span>one-time</span></div>
+        <p class="pricing-desc">Perfect for church planters getting started with a city guide for their community.</p>
+        <ul class="pricing-features">
+          <li>Custom city guide (15+ tabs)</li>
+          <li>Korean or English interface</li>
+          <li>QR code for easy sharing</li>
+          <li>Works on all smartphones</li>
+          <li>Hosted &amp; maintained by us</li>
+        </ul>
+      </div>
+      <div class="pricing-card featured">
+        <div class="pricing-badge">Most Popular</div>
+        <p class="pricing-name">Basic + Maintenance</p>
+        <div class="pricing-price">$50 <span>+ $20/yr</span></div>
+        <p class="pricing-desc">Keep your guide accurate with annual updates — new businesses, changed hours, updated resources.</p>
+        <ul class="pricing-features">
+          <li>Everything in Basic</li>
+          <li>Annual content refresh</li>
+          <li>Priority support</li>
+          <li>New sections on request</li>
+        </ul>
+      </div>
+      <div class="pricing-card">
+        <p class="pricing-name">Multilingual</p>
+        <div class="pricing-price">$80 <span>/language</span></div>
+        <p class="pricing-desc">Add Filipino, Spanish, or other languages to reach every family in your congregation.</p>
+        <ul class="pricing-features">
+          <li>Full translation of all tabs</li>
+          <li>Filipino / Spanish / other</li>
+          <li>Add-on to any plan</li>
+          <li>AI-assisted + human review</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:1.5rem; font-size:0.82rem; color:rgba(247,243,236,0.4);">
+      NWCP church planters: ask about the <strong style="color:var(--gold-light)">NWCP partner discount</strong> — your denomination may cover the cost.
+    </p>
+  </div>
+</section>
+
+<!-- APPLICATION FORM -->
+<section id="apply" class="form-section">
+  <div class="section-inner">
+    <div class="form-wrap">
+      <div>
+        <p class="section-tag">Apply</p>
+        <h2 class="section-title">Request your<br>church's guide.</h2>
+        <div class="form-info">
+          <p>Fill out the form and we'll reach out within 2 business days to confirm your order and begin customizing your app.</p>
+          <p>Have questions first? We're happy to chat before you commit.</p>
+          <div class="contact-line">✉ <a href="mailto:kchurch911@gmail.com">kchurch911@gmail.com</a></div>
+          <div class="contact-line">🌐 <a href="https://ijiguchon.org" target="_blank">ijiguchon.org</a></div>
+        </div>
+      </div>
+      <div>
+        <form id="applyForm" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div>
+              <label for="pastor">Pastor Name</label>
+              <input type="text" id="pastor" name="pastor" placeholder="Rev. John Kim" required>
+            </div>
+            <div>
+              <label for="church">Church Name</label>
+              <input type="text" id="church" name="church" placeholder="Grace Community Church" required>
+            </div>
+          </div>
+          <div>
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="pastor@yourchurch.com" required>
+          </div>
+          <div class="form-row">
+            <div>
+              <label for="city">City / Region</label>
+              <input type="text" id="city" name="city" placeholder="Portland, OR" required>
+            </div>
+            <div>
+              <label for="language">Primary Language</label>
+              <select id="language" name="language">
+                <option value="korean">Korean (한국어)</option>
+                <option value="english">English</option>
+                <option value="bilingual">Korean + English</option>
+                <option value="filipino">Filipino (Tagalog)</option>
+                <option value="spanish">Spanish (Español)</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label for="plan">Plan</label>
+            <select id="plan" name="plan">
+              <option value="basic">Basic — $50 one-time</option>
+              <option value="maintenance" selected>Basic + Maintenance — $50 + $20/yr</option>
+              <option value="multilingual">Multilingual add-on — +$80/language</option>
+              <option value="nwcp">NWCP Partner (denomination-sponsored)</option>
+            </select>
+          </div>
+          <div>
+            <label for="notes">Anything else we should know?</label>
+            <textarea id="notes" name="notes" placeholder="Special community needs, specific neighborhoods, congregation size, etc."></textarea>
+          </div>
+          <button type="submit" class="submit-btn">Submit Application →</button>
+          <p class="form-note">No payment now. We'll confirm details and send an invoice after reviewing your request.</p>
+          <div id="success-msg">✓ Thank you! We'll be in touch within 2 business days.</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo">Seattle Guide · Church App</span>
+  <span>A ministry of GMC Seattle · ijiguchon.org</span>
+  <span>© 2026 All rights reserved</span>
+</footer>
+
+<script>
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.submit-btn');
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
+  setTimeout(() => {
+    document.getElementById('success-msg').style.display = 'block';
+    btn.textContent = 'Submitted ✓';
+    e.target.reset();
+  }, 1200);
+}
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>
